@@ -24,7 +24,7 @@ type Props = {
 /**
  * 방 그래프 보드 (기획서 7.2). 방은 격자 위 버튼, 연결선은 그 아래 SVG.
  * 키보드: 방향키로 방 사이를 옮겨 다니고(로빙 tabindex), Enter/Space로 이동. Home은 주인공이 있는 방.
- * 이어진 방은 실선 + 점선 테두리 + "갈 수 있음"으로, 색만으로 구분하지 않는다.
+ * 갈 수 있는 방은 반투명 민트 바탕 + 굵은 연결선 + "갈 수 있음"(스크린리더)으로, 색만으로 구분하지 않는다.
  */
 export function Board({ attempt: a, heroSprite, monsterSprite, onRoom, shake }: Props) {
   // 쓰지 않는 바깥 줄·칸은 잘라서 보드를 꽉 채운다 (생성된 스테이지는 격자 가장자리가 빌 수 있다)

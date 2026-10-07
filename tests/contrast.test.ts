@@ -106,3 +106,27 @@ for (const [theme, t] of Object.entries(THEMES)) {
     assert.deepEqual(bad, []);
   });
 }
+
+/** 반투명 색(rgba)을 바탕색 위에 깐 결과 */
+function blend(rgba: string, bgHex: string) {
+  const m = /^rgba\(\s*(\d+),\s*(\d+),\s*(\d+),\s*([\d.]+)\s*\)$/.exec(rgba);
+  if (!m) throw new Error(`${rgba}는 rgba()가 아님`);
+  const a = Number(m[4]);
+  const bg = [1, 3, 5].map((i) => parseInt(bgHex.slice(i, i + 2), 16));
+  return "#" + [1, 2, 3].map((k, i) => Math.round(Number(m[k]) * a + bg[i] * (1 - a)).toString(16).padStart(2, "0")).join("");
+}
+
+test("대비 · 갈 수 있는 방(반투명 민트)을 깐 모든 방 바탕 위 글자 4.5:1 이상, 안 깐 방과 구분됨", () => {
+  const bad: string[] = [];
+  for (const tint of ["--room-reachable", "--room-reachable-hover"]) {
+    for (const base of ["--room-fill", "--room-cleared", "--room-current", "--color-primary-soft", "--color-cream"]) {
+      const bg = resolve(ROOT, base);
+      const mixed = blend(ROOT[tint], bg);
+      const r = contrast(resolve(ROOT, "--color-ink"), mixed);
+      if (r < 4.5) bad.push(`${tint} on ${base} = ${r.toFixed(2)}`);
+      // 칠한 방이 원래 바탕과 눈에 띄게 달라야 한다 (밝기 차이)
+      if (contrast(mixed, bg) < 1.15) bad.push(`${tint} on ${base}: 바탕과 구분이 약함 ${contrast(mixed, bg).toFixed(2)}`);
+    }
+  }
+  assert.deepEqual(bad, []);
+});

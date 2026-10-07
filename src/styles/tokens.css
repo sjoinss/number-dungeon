@@ -121,6 +121,9 @@
   --room-current: #ffe3ef;
   --chip-fill: #fffdf8;
   --chip-hero: #ffe39a;
+  /* 갈 수 있는 방에 까는 반투명 민트 (--color-mint-edge 기준) */
+  --room-reachable: rgba(108, 197, 154, 0.38);
+  --room-reachable-hover: rgba(108, 197, 154, 0.55);
 
   /* 레이어 */
   --z-hud: 10;

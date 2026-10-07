@@ -111,7 +111,7 @@ export function PlayScreen({ stage, daily, nextStage, onNext, onExit }: Props) {
     if (id === a.snap.at) return;
     const here = roomById(a, a.snap.at);
     if (!here.links.includes(id)) {
-      setNotice("이어진 방으로만 갈 수 있어요. 굵은 실선으로 이어진 방을 골라 주세요.");
+      setNotice("이어진 방으로만 갈 수 있어요. 초록색으로 칠해진 방을 골라 주세요.");
       sfx("blocked");
       return;
     }
@@ -277,6 +277,7 @@ export function PlayScreen({ stage, daily, nextStage, onNext, onExit }: Props) {
           <details className={styles.rules}>
             <summary>규칙 보기</summary>
             <ul>
+              <li>초록색으로 칠해진 방이 지금 갈 수 있는 방이에요.</li>
               <li>나보다 작은 숫자의 몬스터와 부딪히면 이기고 그 숫자를 흡수해요. 같거나 크면 져요.</li>
               <li>지면 스테이지를 처음부터 다시 해요. 되돌리기는 시도마다 다시 채워져요.</li>
               <li>문: 적힌 숫자 이하일 때만 지나가요. 물약은 숫자를 늘리고 함정은 줄여요.</li>
