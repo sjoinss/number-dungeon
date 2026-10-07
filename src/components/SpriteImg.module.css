@@ -1,0 +1,7 @@
+.sprite {
+  display: block;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  user-select: none;
+  -webkit-user-drag: none;
+}

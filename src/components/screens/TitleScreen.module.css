@@ -1,0 +1,85 @@
+.screen {
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  padding: calc(var(--spacing-xl) + env(safe-area-inset-top)) var(--spacing-md) calc(var(--spacing-xl) + env(safe-area-inset-bottom));
+}
+
+.inner {
+  margin: auto;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-lg);
+}
+
+.logo {
+  font-size: 48px;
+  line-height: 1.1;
+  color: var(--logo-fill);
+  /* 글자 테두리: 여러 방향 그림자로 잉크 외곽선 */
+  text-shadow:
+    3px 0 0 var(--logo-stroke),
+    -3px 0 0 var(--logo-stroke),
+    0 3px 0 var(--logo-stroke),
+    0 -3px 0 var(--logo-stroke),
+    2px 2px 0 var(--logo-stroke),
+    -2px 2px 0 var(--logo-stroke),
+    2px -2px 0 var(--logo-stroke),
+    -2px -2px 0 var(--logo-stroke),
+    0 7px 0 var(--logo-stroke);
+  letter-spacing: 0.02em;
+}
+
+.tagline {
+  margin-top: calc(-1 * var(--spacing-sm));
+  color: var(--color-muted);
+  text-align: center;
+}
+
+.scene {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: var(--spacing-md);
+  width: 100%;
+  padding: var(--spacing-md) var(--spacing-md) 0;
+  border-bottom: var(--game-outline);
+  background:
+    linear-gradient(transparent calc(100% - 10px), var(--board-floor-tile) 0);
+}
+
+.actor {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.sprite {
+  width: 64px;
+  height: 64px;
+}
+
+.arrow {
+  align-self: center;
+  font-family: var(--font-display);
+  font-size: 32px;
+  color: var(--color-muted);
+}
+
+.menu {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-sm);
+}

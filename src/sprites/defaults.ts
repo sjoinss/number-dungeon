@@ -1,0 +1,333 @@
+import type { PixelSprite } from "../lib/schema";
+
+/**
+ * 기본 주인공·몬스터·보스 도트 (16×16). 저장소가 비어 있으면 이 그림을 쓴다 (기획서 10.4).
+ * 글자 하나 = 칸 하나, "." = 투명. 색은 점프점프와 같은 파스텔 + 잉크 외곽선.
+ */
+
+const PALETTE: Record<string, string> = {
+  K: "#3d2c5e", // 잉크 외곽선
+  E: "#22183a", // 눈
+  W: "#fffdf8",
+  w: "#e6dcef",
+  P: "#ff9cc6",
+  p: "#e46a9f",
+  S: "#ffdcc0",
+  B: "#9fd0f5",
+  b: "#d6ecff",
+  N: "#5f8fcf",
+  G: "#a8e6c8",
+  g: "#6cc59a",
+  L: "#c9b6ff",
+  l: "#9b82e6",
+  Y: "#ffe39a",
+  y: "#e8bd4f",
+  R: "#ff8f8f",
+  r: "#d9645b",
+  O: "#ffb877",
+  o: "#e58a45",
+  C: "#fff1d6",
+  c: "#e6d5c3",
+};
+
+export function art(rows: readonly string[]): PixelSprite {
+  const height = rows.length;
+  const width = rows[0].length;
+  const pixels: string[] = [];
+  for (const row of rows) {
+    if (row.length !== width) throw new Error(`도트 줄 길이가 다름: "${row}"`);
+    for (const ch of row) {
+      if (ch === ".") pixels.push("");
+      else if (PALETTE[ch]) pixels.push(PALETTE[ch]);
+      else throw new Error(`모르는 색 글자 ${ch}`);
+    }
+  }
+  return { kind: "pixel", width, height, pixels };
+}
+
+/** 주인공: 파란 투구를 쓴 꼬마 기사 */
+export const HERO_ROWS = [
+  "................",
+  ".....KKKKKK.....",
+  "....KbbbbbbK....",
+  "...KbBBBBBBBK...",
+  "..KbBBBBBBBBBK..",
+  "..KBKKKKKKKKBK..",
+  "..KKSSSSSSSSKK..",
+  "..KSSEKSSKESSK..",
+  "..KSPSSKKSSPSK..",
+  "...KSSSSSSSSK...",
+  "....KKKKKKKK....",
+  "...KNPPPPPPNK...",
+  "..KSKPPYYPPKSK..",
+  "...KKPPPPPPKK...",
+  "....KNKKKKNK....",
+  "....KKK..KKK....",
+] as const;
+
+/** 기본 몬스터 6종 — 숫자와 상관없이 몬스터 id로 하나가 정해진다 */
+export const MONSTER_ROWS: { name: string; rows: readonly string[] }[] = [
+  {
+    name: "말랑 슬라임",
+    rows: [
+      "................",
+      "................",
+      "................",
+      "................",
+      "......KKKK......",
+      "....KKGGGGKK....",
+      "...KGGWGGGGGK...",
+      "..KGGWWGGGGGGK..",
+      "..KGGGGGGGGGGK..",
+      ".KGGGEKGGEKGGGK.",
+      ".KGGGEEGGEEGGGK.",
+      ".KGGPGGKKGGPGGK.",
+      ".KgGGGGGGGGGGgK.",
+      "..KggggggggggK..",
+      "...KKKKKKKKKK...",
+      "................",
+    ],
+  },
+  {
+    name: "박쥐",
+    rows: [
+      "................",
+      "................",
+      "................",
+      ".....K....K.....",
+      ".....KK..KK.....",
+      ".K...KLKKLK...K.",
+      ".KK.KLLLLLLK.KK.",
+      ".KlKKLWELWELKKlK",
+      ".KllKLLLLLLLKllK",
+      ".KlllKLKKLLKlllK",
+      "..KlllKLLLLKllK.",
+      "...KKKKKLLKKKK..",
+      ".......KKKK.....",
+      "................",
+      "................",
+      "................",
+    ],
+  },
+  {
+    name: "유령",
+    rows: [
+      "................",
+      ".....KKKKKK.....",
+      "....KWWWWWWK....",
+      "...KWWWWWWWWK...",
+      "..KwWWWWWWWWWK..",
+      "..KwWEKWWEKWWK..",
+      "..KwWEEWWEEWWK..",
+      "..KwPWWWWWWPWK..",
+      "..KwWWWKKWWWWK..",
+      "..KwWWWWWWWWWK..",
+      "..KwwWWWWWWWWK..",
+      "..KwwWWWWWWWWK..",
+      "..KwKwWKKWWKWK..",
+      "..KK.KK..KK.KK..",
+      "................",
+      "................",
+    ],
+  },
+  {
+    name: "버섯",
+    rows: [
+      "................",
+      ".....KKKKKK.....",
+      "...KKRRWWRRKK...",
+      "..KRRRRWWRRRRK..",
+      ".KRWWRRRRRRWWRK.",
+      ".KRWWRRRRRRWWRK.",
+      ".KrRRRRWWRRRRrK.",
+      "..KKKKKKKKKKKK..",
+      "....KCCCCCCK....",
+      "....KCECCECK....",
+      "....KCPCCPCK....",
+      "....KCCKKCCK....",
+      "....KcCCCCcK....",
+      ".....KKKKKK.....",
+      "................",
+      "................",
+    ],
+  },
+  {
+    name: "해골",
+    rows: [
+      "................",
+      ".....KKKKKK.....",
+      "....KCCCCCCK....",
+      "...KCCCCCCCCK...",
+      "...KCKKCCKKCK...",
+      "...KCKKCCKKCK...",
+      "...KCCCKKCCCK...",
+      "....KCCCCCCK....",
+      "....KCKCKCKK....",
+      ".....KKKKKK.....",
+      "......KCCK......",
+      "....KKCKKCKK....",
+      "....KCKCCKCK....",
+      ".....KCKKCK.....",
+      ".....KK..KK.....",
+      "................",
+    ],
+  },
+  {
+    name: "불꽃 요정",
+    rows: [
+      "................",
+      ".......KK.......",
+      "......KOOK......",
+      ".....KOYYOK.....",
+      "....KOOYYOOK....",
+      "...KOOYYYYOOK...",
+      "...KOYYYYYYOK...",
+      "..KOOYEYYEYOOK..",
+      "..KOYYEYYEYYOK..",
+      "..KOYPYYYYPYOK..",
+      "..KoOYYKKYYOoK..",
+      "...KoOYYYYOoK...",
+      "....KKooooKK....",
+      "......KKKK......",
+      "................",
+      "................",
+    ],
+  },
+];
+
+/** 보스: 뿔 달린 보라 대왕 */
+export const BOSS_ROWS = [
+  "................",
+  "..KK........KK..",
+  "..KWK......KWK..",
+  "...KWK....KWK...",
+  "...KLLKKKKLLK...",
+  "..KLLLLLLLLLLK..",
+  ".KLLLLLLLLLLLLK.",
+  ".KLLWWKLLKWWLLK.",
+  ".KLLWEKLLKEWLLK.",
+  ".KLPLLLLLLLLPLK.",
+  ".KLLLKWKKWKLLLK.",
+  ".KlLLKKKKKKLLlK.",
+  "..KllLLLLLLllK..",
+  "...KKllllllKK...",
+  "....KK....KK....",
+  "................",
+] as const;
+
+export const DEFAULT_HERO = art(HERO_ROWS);
+export const DEFAULT_MONSTERS: PixelSprite[] = MONSTER_ROWS.map((m) => art(m.rows));
+export const DEFAULT_MONSTER_NAMES = MONSTER_ROWS.map((m) => m.name);
+export const DEFAULT_BOSS = art(BOSS_ROWS);
+
+/** 방 요소 그림 (상자·함정·물약·문) — 몬스터와 같은 도트 느낌 */
+export const TILE_ART = {
+  chest: art([
+    "................",
+    "................",
+    "................",
+    "...KKKKKKKKKK...",
+    "..KOOOOOOOOOOK..",
+    "..KOoooooooooK..",
+    "..KOoooooooooK..",
+    "..KKKKKKKKKKKK..",
+    "..KOOOOKKOOOOK..",
+    "..KOooKYYKooOK..",
+    "..KOooKYyKooOK..",
+    "..KOoooKKoooOK..",
+    "..KOoooooooooK..",
+    "..KKKKKKKKKKKK..",
+    "................",
+    "................",
+  ]),
+  chestOpen: art([
+    "................",
+    "...KKKKKKKKKK...",
+    "..KOOOOOOOOOOK..",
+    "..KOoooooooooK..",
+    "..KKKKKKKKKKKK..",
+    "..KEEEEEEEEEEK..",
+    "..KEEYEEEEYEEK..",
+    "..KKKKKKKKKKKK..",
+    "..KOOOOKKOOOOK..",
+    "..KOooKYYKooOK..",
+    "..KOooKYyKooOK..",
+    "..KOoooKKoooOK..",
+    "..KOoooooooooK..",
+    "..KKKKKKKKKKKK..",
+    "................",
+    "................",
+  ]),
+  trap: art([
+    "................",
+    "................",
+    "................",
+    "................",
+    "................",
+    "...K....K....K..",
+    "..KWK..KWK..KWK.",
+    "..KwK..KwK..KwK.",
+    ".KwwwKKwwwKKwwwK",
+    ".KwwwKKwwwKKwwwK",
+    ".KKKKKKKKKKKKKKK",
+    ".KccccccccccccK.",
+    ".KKKKKKKKKKKKKK.",
+    "................",
+    "................",
+    "................",
+  ]),
+  potion: art([
+    "................",
+    "......KKKK......",
+    "......KccK......",
+    ".......KK.......",
+    "......KWWK......",
+    ".....KWWWWK.....",
+    "....KWWWWWWK....",
+    "...KRRRRRRRRK...",
+    "...KRWRRRRRRK...",
+    "...KRWRRRRRRK...",
+    "...KRRRRRRRRK...",
+    "...KrRRRRRRrK...",
+    "....KrrrrrrK....",
+    ".....KKKKKK.....",
+    "................",
+    "................",
+  ]),
+  potionBig: art([
+    "................",
+    "......KKKK......",
+    "......KccK......",
+    ".......KK.......",
+    "......KWWK......",
+    ".....KWWWWK.....",
+    "....KWWWWWWK....",
+    "...KLLLLLLLLK...",
+    "...KLWLLLLLLK...",
+    "...KLWLYYLLLK...",
+    "...KLLLYYLLLK...",
+    "...KlLLLLLLlK...",
+    "....KllllllK....",
+    ".....KKKKKK.....",
+    "................",
+    "................",
+  ]),
+  gate: art([
+    "................",
+    "..KKKKKKKKKKKK..",
+    "..KcKcKcKcKcKK..",
+    "..KCKCKCKCKCcK..",
+    "..KCKCKCKCKCcK..",
+    "..KCKCKCKCKCcK..",
+    "..KKKKKKKKKKKK..",
+    "..KCKCKCKCKCcK..",
+    "..KCKCKCKCKCcK..",
+    "..KCKCKCKCKCcK..",
+    "..KCKCKCKCKCcK..",
+    "..KKKKKKKKKKKK..",
+    "................",
+    "................",
+    "................",
+    "................",
+  ]),
+} as const;

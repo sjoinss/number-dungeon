@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "outDir": ".test-build",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "incremental": false,
+    "plugins": []
+  },
+  "include": ["tests/**/*.ts", "scripts/**/*.ts", "src/game/**/*.ts", "src/sprites/chibi.ts", "src/sprites/mobs.ts", "src/sprites/defaults.ts", "src/sprites/assign.ts", "src/editor/session.ts", "src/editor/grid.ts", "src/editor/history.ts", "src/editor/imageConvert.ts", "src/lib/schema.ts"],
+  "exclude": ["node_modules"]
+}

@@ -1,0 +1,37 @@
+.chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2em;
+  padding: 0 0.4em;
+  border: 2px solid var(--color-line);
+  border-radius: var(--radius-full);
+  background: var(--chip-fill);
+  box-shadow: 0 2px 0 var(--color-line);
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  line-height: 1.35;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.hero {
+  background: var(--chip-hero);
+  border-width: 3px;
+}
+
+.boss {
+  background: var(--color-primary-soft);
+}
+
+.sm {
+  font-size: 13px;
+}
+
+.md {
+  font-size: 16px;
+}
+
+.lg {
+  font-size: 22px;
+}

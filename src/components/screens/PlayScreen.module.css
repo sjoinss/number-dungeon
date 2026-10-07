@@ -1,0 +1,298 @@
+.screen {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: calc(var(--spacing-sm) + env(safe-area-inset-top)) var(--spacing-md) var(--spacing-xs);
+}
+
+.title {
+  justify-self: center;
+  max-width: 100%;
+  padding: var(--spacing-xs) var(--spacing-lg);
+  border: var(--game-outline);
+  border-radius: var(--radius-full);
+  background: var(--color-secondary);
+  box-shadow: 0 var(--edge-height) 0 var(--color-line);
+  font-size: var(--font-size-section-title);
+  line-height: var(--line-height-tight);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 380px) {
+  .title {
+    padding-inline: var(--spacing-md);
+    font-size: var(--font-size-subheading);
+  }
+}
+
+/* 휴대폰: 보드 → 행동 (세로로). 데스크톱: 보드 크게 + 옆 칸 */
+.layout {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: var(--spacing-sm) var(--spacing-md) calc(var(--spacing-lg) + env(safe-area-inset-bottom));
+}
+
+.boardArea {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  /* 보드 + 결과 글줄이 한 화면에 들어오게 (머리·상태줄·글줄 자리를 뺀 높이). 버튼은 그 아래로 스크롤 */
+  --board-max-h: max(300px, calc(100dvh - 230px));
+}
+
+@media (min-width: 1024px) {
+  .layout {
+    max-width: 1240px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    align-items: start;
+    gap: var(--spacing-xl);
+    padding-top: var(--spacing-md);
+  }
+
+  .boardArea {
+    --board-max-h: calc(100dvh - 230px);
+  }
+
+  .side {
+    position: sticky;
+    top: var(--spacing-md);
+  }
+}
+
+.stats {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--spacing-xs) var(--spacing-sm);
+}
+
+.stats > div {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 2px var(--spacing-sm);
+  border: 2px solid var(--color-line);
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+}
+
+.stats dt {
+  color: var(--color-muted);
+  font-size: var(--font-size-caption);
+}
+
+.stats dd {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--font-size-subheading);
+}
+
+.stats .power {
+  background: var(--chip-hero);
+}
+
+.stats .power dt,
+.stats .low dt {
+  color: var(--color-ink);
+}
+
+/* 이동이 얼마 안 남음: 글자로 수를 보여주고 배경과 테두리 모양을 바꾼다 */
+.stats .low {
+  background: var(--color-warning-soft);
+  border-style: dashed;
+}
+
+.message {
+  min-height: 3.2em;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 2px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  text-align: center;
+}
+
+.tone_success {
+  background: var(--color-success-soft);
+}
+
+.tone_warning {
+  background: var(--color-warning-soft);
+}
+
+.tone_error {
+  background: var(--color-error-soft);
+}
+
+.sub {
+  color: var(--color-muted);
+  font-size: var(--font-size-caption);
+  text-align: center;
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-sm);
+}
+
+.controls .sub {
+  grid-column: 1 / -1;
+  margin-top: calc(-1 * var(--spacing-xs));
+}
+
+@media (min-width: 1024px) {
+  .controls {
+    grid-template-columns: 1fr;
+  }
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-sm);
+}
+
+.sheet {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-lg) var(--spacing-md) var(--spacing-md);
+  border: var(--game-outline);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 6px 0 var(--color-line);
+  text-align: center;
+  animation: rise var(--duration-base) var(--ease-pop);
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+}
+
+.sheet_success {
+  background: var(--color-success-soft);
+}
+
+.sheet_error {
+  background: var(--color-error-soft);
+}
+
+.sheetTitle {
+  font-size: var(--font-size-page-title);
+}
+
+.sheetActions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
+}
+
+.chests {
+  margin: 0;
+  padding: var(--spacing-md);
+  border: var(--game-outline);
+  border-radius: var(--radius-lg);
+  background: var(--color-butter);
+}
+
+.chests legend {
+  padding: 0 var(--spacing-sm);
+  border: 2px solid var(--color-line);
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  font-family: var(--font-display);
+  font-size: var(--font-size-subheading);
+}
+
+.chests .sub {
+  color: var(--color-ink);
+}
+
+.chestRow {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
+}
+
+.chest {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 80px;
+  padding: var(--spacing-xs) var(--spacing-sm) var(--spacing-sm);
+  border: var(--game-outline);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: 0 var(--edge-height) 0 var(--color-line);
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  cursor: pointer;
+}
+
+.chest:hover {
+  transform: translateY(-2px);
+}
+
+.chest:active {
+  transform: translateY(var(--edge-height));
+  box-shadow: none;
+}
+
+.chestImg {
+  width: 56px;
+  height: 56px;
+}
+
+.rules {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 2px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.rules summary {
+  min-height: var(--touch-target);
+  display: flex;
+  align-items: center;
+  font-family: var(--font-display);
+  font-size: var(--font-size-subheading);
+  cursor: pointer;
+}
+
+.rules ul {
+  margin: 0 0 var(--spacing-sm);
+  padding-left: 1.2em;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}

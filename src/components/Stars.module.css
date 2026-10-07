@@ -1,0 +1,16 @@
+.stars {
+  display: inline-flex;
+  gap: 2px;
+  line-height: 0;
+}
+
+.on {
+  color: var(--color-butter-edge);
+  filter: drop-shadow(1px 0 0 var(--color-line)) drop-shadow(-1px 0 0 var(--color-line)) drop-shadow(0 1px 0 var(--color-line))
+    drop-shadow(0 -1px 0 var(--color-line));
+}
+
+/* 못 받은 별: 연한 색 (모양은 같고, 개수는 글자로도 전달) */
+.off {
+  color: var(--color-border);
+}

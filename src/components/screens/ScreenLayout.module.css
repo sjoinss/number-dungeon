@@ -1,0 +1,68 @@
+.screen {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--color-background);
+  background-image: radial-gradient(var(--color-background-dot) 2px, transparent 2.5px);
+  background-size: 20px 20px;
+}
+
+.header {
+  display: grid;
+  /* 제목이 길면 제목 쪽이 줄어든다 (뒤로·완료 버튼은 줄바꿈하지 않음) */
+  grid-template-columns: minmax(var(--hud-button), 1fr) minmax(0, auto) minmax(var(--hud-button), 1fr);
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: calc(var(--spacing-md) + env(safe-area-inset-top)) calc(var(--spacing-md) + env(safe-area-inset-right))
+    var(--spacing-sm) calc(var(--spacing-md) + env(safe-area-inset-left));
+}
+
+.back {
+  justify-self: start;
+}
+
+.title {
+  padding: var(--spacing-xs) var(--spacing-lg);
+  border: var(--game-outline);
+  border-radius: var(--radius-full);
+  background: var(--color-secondary);
+  box-shadow: 0 var(--edge-height) 0 var(--color-line);
+  font-size: var(--font-size-section-title);
+  line-height: var(--line-height-tight);
+  text-align: center;
+  white-space: nowrap;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 아주 좁은 화면(320px대)에서 "이미지 불러오기" 같은 제목이 잘리지 않게 */
+@media (max-width: 360px) {
+  .title {
+    padding-inline: var(--spacing-md);
+    font-size: var(--font-size-subheading);
+  }
+}
+
+.action {
+  justify-self: end;
+  white-space: nowrap;
+}
+
+.body {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--spacing-lg) calc(var(--spacing-md) + env(safe-area-inset-right))
+    calc(var(--spacing-lg) + env(safe-area-inset-bottom)) calc(var(--spacing-md) + env(safe-area-inset-left));
+}
+
+.fill {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  overflow: hidden;
+  padding-top: var(--spacing-sm);
+  padding-bottom: calc(var(--spacing-md) + env(safe-area-inset-bottom));
+}
