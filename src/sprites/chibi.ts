@@ -4,7 +4,7 @@ import type { PixelSprite } from "../lib/schema";
  * 귀여운 비율(치비) 조립 (기획서 11장).
  * 스킨/텍스처에서 머리·몸·팔·다리 "앞면"을 잘라 32×32 도트 칸에 머리는 크게, 몸은 작게 다시 붙인다.
  * 최근접 픽셀만 쓰고(도트 느낌 유지), 머리는 정수 배(2배)로 키운다.
- * 점프점프(jumping/src/editor/skin.ts)의 스킨 변환을 바탕으로, 몹마다 다른 텍스처 배치를 표(PartSpec 목록)로 받게 바꿨다.
+ * 점프점프(jumping/src/editor/skin.ts)의 스킨 변환을 바탕으로, 부위 배치를 표(PartSpec 목록)로 받게 바꿨다.
  * 숫자는 이 그림 밖(머리 위 별도 영역)에 그리므로 여기서는 자리를 비우지 않는다.
  */
 
@@ -14,7 +14,7 @@ export type Face = { x: number; y: number; w: number; h: number };
 export type PartSpec = {
   src: Face;
   dst: Face;
-  /** 좌우 뒤집기 (예전 스킨의 왼팔·왼다리, 몹의 반대쪽 다리) */
+  /** 좌우 뒤집기 (예전 스킨의 왼팔·왼다리) */
   mirror?: boolean;
 };
 
@@ -69,7 +69,7 @@ export function compose(t: Texture, parts: readonly PartSpec[], size: number = C
   return { kind: "pixel", width: size, height: size, pixels: out };
 }
 
-/** 사람형(플레이어·좀비·스켈레톤) 부위의 앞면 */
+/** 사람형(플레이어 스킨) 부위의 앞면 */
 export type HumanoidFaces = {
   head: Face;
   hat?: Face;

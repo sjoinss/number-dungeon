@@ -18,5 +18,3 @@ npm run levels     # 스테이지 다시 만들기 (src/game/levels.json)
 
 Next.js(App Router, 정적 내보내기) + TypeScript, 외부 라이브러리 없이 만듭니다. 디자인과 도트 에디터·스킨 변환은 [점프점프](../jumping)에서 가져왔습니다.
 진행 기록·설정은 localStorage, 꾸민 그림은 IndexedDB에만 저장하며 서버로 보내지 않습니다.
-
-마크모드의 마인크래프트 몹 텍스처는 이 저장소에 들어 있지 않습니다. 켤 때 공개 에셋 미러에서 받아 브라우저 안에서 변환합니다.

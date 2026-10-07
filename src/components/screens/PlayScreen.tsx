@@ -17,7 +17,7 @@ import { eventMessage } from "@/game/messages";
 import { penaltyOf, starsFor } from "@/game/stars";
 import type { Room, Stage } from "@/game/types";
 import type { Sfx } from "@/lib/sound";
-import { bossSprite, heroSprite, mobFor, monsterSprites, slotFor } from "@/sprites/assign";
+import { bossSprite, heroSprite, monsterSprites, slotFor } from "@/sprites/assign";
 import { TILE_ART } from "@/sprites/defaults";
 import { Board } from "../Board";
 import { useGameData } from "../GameData";
@@ -62,7 +62,7 @@ const SFX_FOR: Partial<Record<Session["attempt"]["event"]["kind"], Sfx>> = {
  * 데스크톱은 보드를 크게, 상태·규칙은 옆 칸.
  */
 export function PlayScreen({ stage, daily, nextStage, onNext, onExit }: Props) {
-  const { custom, settings, mobs, sfx, addClear, progress } = useGameData();
+  const { custom, sfx, addClear, progress } = useGameData();
   const toast = useToast();
   const [session, setSession] = useState<Session>(() => newSession(stage));
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -71,16 +71,11 @@ export function PlayScreen({ stage, daily, nextStage, onNext, onExit }: Props) {
   const titleRef = useFocusOnMount<HTMLHeadingElement>();
   const a = session.attempt;
 
-  // 몬스터 외형: 마크모드(그림이 준비됐을 때) 또는 꾸민/기본 몬스터. 몬스터 id로 고정
+  // 몬스터 외형: 꾸민/기본 몬스터 중 몬스터 id로 고정
   const monsters = useMemo(() => monsterSprites(custom), [custom]);
-  const mobSprites = settings.mcMode && mobs.status === "ready" ? mobs.sprites : null;
   const spriteFor = useCallback(
-    (room: Room) => {
-      const boss = room.type === "boss";
-      if (mobSprites) return mobSprites[mobFor(stage.id, room.id, boss)];
-      return boss ? bossSprite(custom) : monsters[slotFor(stage.id, room.id, monsters.length)];
-    },
-    [mobSprites, monsters, custom, stage.id],
+    (room: Room) => (room.type === "boss" ? bossSprite(custom) : monsters[slotFor(stage.id, room.id, monsters.length)]),
+    [monsters, custom, stage.id],
   );
 
   const message = notice ?? eventMessage(a).text;
@@ -175,7 +170,7 @@ export function PlayScreen({ stage, daily, nextStage, onNext, onExit }: Props) {
         <h1 ref={titleRef} tabIndex={-1} className={styles.title}>
           {daily ? stage.title : `${stageNumber(stage)}. ${stage.title}`}
         </h1>
-        <IconButton icon="gear" label="설정 (마크모드·소리)" onClick={() => setSettingsOpen(true)} />
+        <IconButton icon="gear" label="설정 (소리·모션)" onClick={() => setSettingsOpen(true)} />
       </header>
 
       <div className={styles.layout}>
@@ -206,7 +201,6 @@ export function PlayScreen({ stage, daily, nextStage, onNext, onExit }: Props) {
           <p className={`${styles.message} ${styles[`tone_${tone}`]}`} role="status" aria-live="polite">
             <span aria-hidden="true">{SYMBOL[tone]}</span> {message}
           </p>
-          {settings.mcMode && mobs.status === "loading" && <p className={styles.sub}>마크 몹 그림을 불러오는 중이에요…</p>}
         </section>
 
         <section className={styles.side} aria-label="행동">

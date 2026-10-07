@@ -30,9 +30,9 @@
 src/
   game/       types · rules(판정, 순수) · attempt(시도·되돌리기·세션) · solver(DFS+메모, 상자 AND 노드, 탐욕 시뮬) ·
               generator(역방향 생성, 시드) · levels.json/levels.ts · stars · messages(화면·스크린리더 문장)
-  sprites/    defaults(기본 도트) · chibi(꼬마 비율 조립, 표 기반) · mobs(마크 몹 UV 표 + 미러 주소) · mcLoader · assign(외형 배정) · draw
+  sprites/    defaults(기본 도트) · chibi(스킨 → 꼬마 비율 조립, 표 기반) · assign(외형 배정) · draw
   editor/     session(에디터 reducer) · imageConvert/imageLoad · skinFetch · DotCanvas/Toolbar/Palette/ColorPicker/grid/history(점프점프에서)
-  components/ App(화면 전환) · GameData(저장·설정·마크 몹·효과음) · Board · screens/ · ui/(점프점프 공통 컴포넌트)
+  components/ App(화면 전환) · GameData(저장·설정·효과음) · Board · screens/ · ui/(점프점프 공통 컴포넌트)
   lib/        schema(꾸민 그림 검증) · prefs(진행·설정, localStorage) · storage(IndexedDB) · sound
   styles/tokens.css  점프점프 기본 테마 토큰 + 보드 색 (tests/contrast.test.ts가 대비 확인)
 ```
@@ -49,9 +49,9 @@ src/
 ## 사용자 결정 (기획서보다 우선)
 
 - 기술 스택: **Next.js + TS** (점프점프와 같게, 공통 컴포넌트·에디터·스킨 변환 재사용).
-- 마크 리소스: **공개 미러만** (assets.mcasset.cloud → jsDelivr, minecraftimg와 같은 방식). 업로드 없음. 변환한 32×32 결과만 IndexedDB `mc.mobs.v1`에 캐시. 텍스처 파일은 저장소에 넣지 않는다.
+- **마크모드(몬스터를 마크 몹 외형으로) 없음** (2026-10-07, "징그럽다" — 만들었다가 뺌. 기획서 12장 제외). 다시 넣지 않는다. 예전 캐시 키 `mc.mobs.v1`은 시작할 때 지운다. 꾸미기의 마크 스킨 가져오기(내 그림으로 바꾸기)는 그대로.
 - 에디터 격자: **16×16 / 32×32** (기획서대로). 스킨은 32×32 꼬마로 조립 → 스킨을 가져오면 격자도 32로.
-- 범위: 기획서 1~4단계 (+ 생성기가 있어 "오늘의 도전"도 넣음).
+- 범위: 기획서 1~3단계 (+ 생성기가 있어 "오늘의 도전"도 넣음). 4단계(마크모드)는 위 결정으로 제외.
 
 ## 확인 요령 (브라우저)
 

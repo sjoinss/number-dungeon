@@ -12,7 +12,7 @@ import styles from "./SettingsScreen.module.css";
 
 type Danger = "progress" | "sprites" | null;
 
-/** 설정: 마크모드·소리·모션 + 데이터 지우기(위험 동작은 맨 아래, 확인창 기본 포커스는 취소) */
+/** 설정: 소리·모션 + 데이터 지우기(위험 동작은 맨 아래, 확인창 기본 포커스는 취소) */
 export function SettingsScreen({ onBack }: { onBack: () => void }) {
   const { resetProgress, saveCustom } = useGameData();
   const toast = useToast();

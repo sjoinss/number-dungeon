@@ -12,14 +12,12 @@ export type StageRecord = { stars: Stars; bestPenalty: number };
 export type Progress = Record<string, StageRecord>;
 
 export type Settings = {
-  /** 마크모드: 몬스터를 마인크래프트 몹 외형으로 */
-  mcMode: boolean;
   sound: boolean;
   /** 모션 줄이기 (운영체제 설정과 별개로 게임에서 켤 수 있음) */
   reduceMotion: boolean;
 };
 
-export const DEFAULT_SETTINGS: Settings = { mcMode: false, sound: true, reduceMotion: false };
+export const DEFAULT_SETTINGS: Settings = { sound: true, reduceMotion: false };
 
 function read(key: string): unknown {
   try {
@@ -68,7 +66,6 @@ export function loadSettings(): Settings {
   const raw = read(SETTINGS_KEY);
   const r = (raw && typeof raw === "object" ? raw : {}) as Partial<Settings>;
   return {
-    mcMode: typeof r.mcMode === "boolean" ? r.mcMode : DEFAULT_SETTINGS.mcMode,
     sound: typeof r.sound === "boolean" ? r.sound : DEFAULT_SETTINGS.sound,
     reduceMotion: typeof r.reduceMotion === "boolean" ? r.reduceMotion : DEFAULT_SETTINGS.reduceMotion,
   };

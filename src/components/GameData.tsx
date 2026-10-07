@@ -16,19 +16,14 @@ import { parseCustomSprites, type CustomSprites } from "@/lib/schema";
 import { playSfx, type Sfx } from "@/lib/sound";
 import { MemoryStore, openStorage, type KeyValueStore, type StorageError } from "@/lib/storage";
 import { DEFAULT_MONSTERS } from "@/sprites/defaults";
-import { cachedMobs, fetchMobs, type MobSprites } from "@/sprites/mcLoader";
 
 /**
- * 앱 전체가 함께 쓰는 데이터: 꾸민 그림(IndexedDB), 진행·설정(localStorage), 마크 몹 그림, 효과음.
+ * 앱 전체가 함께 쓰는 데이터: 꾸민 그림(IndexedDB), 진행·설정(localStorage), 효과음.
  */
 
 const SPRITES_KEY = "sprites";
-
-export type MobState =
-  | { status: "idle" }
-  | { status: "loading" }
-  | { status: "ready"; sprites: MobSprites }
-  | { status: "error"; message: string };
+/** 예전 마크모드가 남긴 몹 그림 캐시 (기능을 없애서 시작할 때 지운다) */
+const OLD_MOB_CACHE_KEY = "mc.mobs.v1";
 
 type GameDataApi = {
   ready: boolean;
@@ -42,8 +37,6 @@ type GameDataApi = {
   progress: Progress;
   addClear: (stageId: string, stars: Stars, penalty: number) => void;
   resetProgress: () => void;
-  mobs: MobState;
-  loadMobs: () => void;
   sfx: (kind: Sfx) => void;
 };
 
@@ -58,7 +51,6 @@ export function GameDataProvider({ children }: { children: ReactNode }) {
   const [custom, setCustom] = useState<CustomSprites>(EMPTY_CUSTOM);
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
   const [progress, setProgress] = useState<Progress>({});
-  const [mobs, setMobs] = useState<MobState>({ status: "idle" });
 
   useEffect(() => {
     setSettings(loadSettings());
@@ -74,8 +66,7 @@ export function GameDataProvider({ children }: { children: ReactNode }) {
       } catch {
         // 읽기 실패: 기본 그림으로 계속
       }
-      const cached = await cachedMobs(opened.store);
-      if (alive && cached) setMobs({ status: "ready", sprites: cached });
+      opened.store.delete(OLD_MOB_CACHE_KEY).catch(() => {});
       if (alive) setReady(true);
     })();
     return () => {
@@ -119,37 +110,14 @@ export function GameDataProvider({ children }: { children: ReactNode }) {
     saveProgress({});
   }, []);
 
-  const loading = useRef(false);
-  const loadMobs = useCallback(() => {
-    if (loading.current) return;
-    loading.current = true;
-    setMobs({ status: "loading" });
-    fetchMobs(store.current)
-      .then((sprites) => setMobs({ status: "ready", sprites }))
-      .catch(() =>
-        setMobs({
-          status: "error",
-          message: "마인크래프트 리소스를 받아오지 못했어요. 인터넷 연결을 확인하고 다시 시도해 주세요.",
-        }),
-      )
-      .finally(() => {
-        loading.current = false;
-      });
-  }, []);
-
-  // 마크모드가 켜져 있는데 그림이 없으면 받아온다
-  useEffect(() => {
-    if (ready && settings.mcMode && mobs.status === "idle") loadMobs();
-  }, [ready, settings.mcMode, mobs.status, loadMobs]);
-
   const soundOn = settings.sound;
   const sfx = useCallback((kind: Sfx) => {
     if (soundOn) playSfx(kind);
   }, [soundOn]);
 
   const api = useMemo<GameDataApi>(
-    () => ({ ready, storageError, custom, saveCustom, settings, updateSettings, progress, addClear, resetProgress, mobs, loadMobs, sfx }),
-    [ready, storageError, custom, saveCustom, settings, updateSettings, progress, addClear, resetProgress, mobs, loadMobs, sfx],
+    () => ({ ready, storageError, custom, saveCustom, settings, updateSettings, progress, addClear, resetProgress, sfx }),
+    [ready, storageError, custom, saveCustom, settings, updateSettings, progress, addClear, resetProgress, sfx],
   );
   return <Ctx.Provider value={api}>{children}</Ctx.Provider>;
 }

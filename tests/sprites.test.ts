@@ -10,7 +10,6 @@ import { parseCustomSprites } from "../src/lib/schema";
 import { slotFor } from "../src/sprites/assign";
 import { CHIBI, CHIBI_HEAD_RATIO, compose, humanoidParts, skinToChibi, type Texture } from "../src/sprites/chibi";
 import { DEFAULT_HERO, DEFAULT_MONSTERS } from "../src/sprites/defaults";
-import { MOBS } from "../src/sprites/mobs";
 
 const run = (s: EditorState, ...actions: EditorAction[]) => actions.reduce(editorReducer, s);
 
@@ -52,13 +51,6 @@ test("치비: 머리 비율은 기획서 권장(55~62%) 안, 결과는 32×32", 
   assert.equal(s.width, CHIBI.size);
   assert.equal(s.pixels[10 * 32 + 16], "#ff0000"); // 머리 가운데
   assert.equal(s.pixels[31 * 32 + 13], "#0000ff"); // 맨 아래 줄은 다리
-  // 몹 표는 모두 32×32 안에 그린다
-  for (const mob of Object.values(MOBS)) {
-    for (const p of mob.parts) {
-      assert.ok(p.dst.x >= 0 && p.dst.y >= 0 && p.dst.x + p.dst.w <= 32 && p.dst.y + p.dst.h <= 32, `${mob.id} 부위가 칸 밖`);
-      assert.ok(p.src.x + p.src.w <= mob.size[0] && p.src.y + p.src.h <= mob.size[1], `${mob.id} UV가 텍스처 밖`);
-    }
-  }
   assert.equal(compose(tex, humanoidParts({ head: { x: 8, y: 8, w: 8, h: 8 }, body: { x: 20, y: 20, w: 8, h: 12 }, armL: { x: 44, y: 20, w: 4, h: 12 }, legL: { x: 4, y: 20, w: 4, h: 12 } })).pixels.length, 1024);
 });
 
