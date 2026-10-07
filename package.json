@@ -10,7 +10,7 @@
     "levels": "tsc -p tsconfig.test.json && node scripts/build-levels.cjs"
   },
   "dependencies": {
-    "next": "16.3.5",
+    "next": "16.4.0",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },
